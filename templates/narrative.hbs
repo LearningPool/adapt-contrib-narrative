@@ -1,84 +1,125 @@
-<div class="narrative-inner component-inner" role="region" aria-label="{{_globals._components._narrative.ariaRegion}}">
-  {{> component this}}
-  <div class="narrative-widget component-widget {{#if _hasNavigationInTextArea}}narrative-text-controls{{/if}}">
+<div class="component__inner narrative__inner" role="region" aria-label="{{_globals._components._narrative.ariaRegion}}">
 
-    <div class="narrative-content">
-      <div class="narrative-content-inner">
+  {{> component this}}
+
+  <div class="component__widget m-narrative__widget{{#if _hasNavigationInTextArea}} m-narrative__text-controls{{/if}} u-clearfix">
+
+    <div class="m-narrative__content">
+      <div class="m-narrative__content-inner">
+
         {{#each _items}}
-        <div class="narrative-content-item {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}">
+        <div class="m-narrative__content-item{{#if _isVisited}} is-visited{{/if}}" data-index="{{@index}}">
+
           {{#if _graphic.alt}}{{{a11y_aria_label _graphic.alt}}}{{/if}}
-          <div class="narrative-content-title">
-            <div class="narrative-content-title-inner h5" role="heading" aria-level="5" tabindex="0">
+
+          {{#if title}}
+          <div class="m-narrative__content-title">
+            <div class="narrative__content-title-inner" {{{a11y_attrs_heading "componentItem"}}}>
               {{{title}}}
             </div>
           </div>
-          <div class="narrative-content-body">
-            <div class="narrative-content-body-inner">
+          {{/if}}
+
+          {{#if body}}
+          <div class="m-narrative__content-body">
+            <div class="m-narrative__content-body-inner">
               {{{a11y_text body}}}
             </div>
           </div>
+          {{/if}}
+
         </div>
         {{/each}}
-        <div class="narrative-controls-container clearfix">
-          <div class="narrative-indicators">
+
+        <div class="m-narrative__controls-container u-clearfix">
+
+          <div class="m-narrative__indicators js-narrative-indicators">
             {{#each _items}}
-            <div class="narrative-progress component-item-color component-item-border {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}"></div>
+            <div class="m-narrative__progress component-item-color component-item-border js-narrative-progress{{#if _isVisited}} is-visited{{/if}}" data-index="{{@index}}"></div>
             {{/each}}
           </div>
-          <button class="base narrative-controls narrative-control-left" role="button" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
-            <div class="icon icon-controls-left"></div>
+
+          <button class="btn-icon m-narrative__controls m-narrative__control-left js-narrative-controls" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
+            <div class="icon"></div>
           </button>
-          <button class="base narrative-controls narrative-control-right" role="button" aria-label="{{_globals._accessibility._ariaLabels.next}}">
-            <div class="icon icon-controls-right"></div>
+
+          <button class="btn-icon m-narrative__controls m-narrative__control-right js-narrative-controls" aria-label="{{_globals._accessibility._ariaLabels.next}}">
+            <div class="icon"></div>
           </button>
+
         </div>
+
       </div>
     </div>
 
-    <div class="narrative-strapline">
-      <div class="narrative-strapline-header">
-        <div class="narrative-strapline-header-inner clearfix" style="width: {{_totalWidth}}%">
-          <div></div>
+    <div class="m-narrative__strapline">
+
+      <div class="m-narrative__strapline-header">
+        <div class="m-narrative__strapline-header-inner u-clearfix" style="width: {{_totalWidth}}%">
+
           {{#each _items}}
-          <button role="button" class="base narrative-strapline-title {{#if _isVisited}}visited{{/if}}" aria-label="{{{strapline}}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
-            <div class="narrative-strapline-title-inner h5">
-              {{{strapline}}}
+          <button class="btn-text m-narrative__strapline-title js-narrative-strapline-title{{#if _isVisited}} is-visited{{/if}}" aria-label="{{{strapline}}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
+
+            <div class="m-narrative-strapline__text">
+              <div class="m-narrative-strapline__text-inner">
+                {{{strapline}}}
+              </div>
             </div>
-            <div class="icon icon-plus"></div>
+
+            <div class="btn-icon m-narrative__strapline-icon">
+              <div class="icon"></div>
+            </div>
+
             <div class="focus-rect"></div>
+
           </button>
           {{/each}}
+
         </div>
       </div>
+
     </div>
 
-    <div class="narrative-slide-container">
+    <div class="m-narrative__slide-container">
 
-      <button class="base narrative-controls narrative-control-left" role="button" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
-        <div class="icon icon-controls-left"></div>
-      </button>
-      <button class="base narrative-controls narrative-control-right" role="button" aria-label="{{_globals._accessibility._ariaLabels.next}}">
-        <div class="icon icon-controls-right"></div>
+      <button class="btn-icon m-narrative__controls m-narrative__control-left js-narrative-controls" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
+        <div class="icon"></div>
       </button>
 
-      <div class="narrative-slider clearfix" style="width: {{_totalWidth}}%">
+      <button class="btn-icon m-narrative__controls m-narrative__control-right js-narrative-controls" aria-label="{{_globals._accessibility._ariaLabels.next}}">
+        <div class="icon"></div>
+      </button>
+
+      <div class="m-narrative__slider u-clearfix" style="width: {{_totalWidth}}%">
+
         {{#each _items}}
-        <div class="narrative-slider-graphic {{#if _isVisited}}visited{{/if}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
+        <div class="m-narrative__slider-graphic{{#if _isVisited}} is-visited{{/if}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
           <img src="{{_graphic.src}}" />
+
           {{#if _graphic.attribution}}
-            <div class="graphic-attribution">{{{_graphic.attribution}}}</div>
+          <div class="m-narrative__attribution">
+            <div class="m-narrative__attribution-inner">
+              {{{_graphic.attribution}}}
+            </div>
+          </div>
           {{/if}}
+
         </div>
         {{/each}}
+
       </div>
-      <div class="narrative-indicators">
+
+      <div class="m-narrative__indicators js-narrative-indicators">
+
         {{#each _items}}
-        <div class="narrative-progress component-item-color component-item-border {{#if _isVisited}}visited{{/if}}" data-index="{{@index}}"></div>
+        <div class="m-narrative__progress component-item-color component-item-border{{#if _isVisited}} is-visited{{/if}}" data-index="{{@index}}"></div>
         {{/each}}
+
       </div>
     </div>
 
-    <div class="clearfix"></div>
+    <div class="u-clearfix"></div>
 
   </div>
+
 </div>

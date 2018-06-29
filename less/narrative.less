@@ -1,3 +1,239 @@
+.m-narrative {
+  &__content {
+    .u-float-right;
+    margin-left: 3%;
+    width: 37%;
+
+    .dir-rtl & {
+      margin-left: inherit;
+      margin-right: 3%;
+    }
+
+    // Hide the content area in mobile view
+    @media (max-width: @device-width-medium) {
+      display: none;
+    }
+  }
+
+  // --------------------------------------------------
+  // Strapline
+  // Clickable element on mobile, opens notify
+  // --------------------------------------------------
+  &__strapline {
+    position: relative;
+
+    @media (min-width: @device-width-medium) {
+      display: none;
+    }
+  }
+
+  &__strapline-header {
+    position: relative;
+    overflow: hidden;
+  }
+
+  &__strapline-title {
+    position: relative;
+    .u-float-left;
+  }
+
+  &__strapline-title.focus-rect {
+    position: absolute;
+    right: extract(@focus-outline, 1);
+    bottom: extract(@focus-outline, 1);
+    top: extract(@focus-outline, 1);
+    left: extract(@focus-outline, 1);
+  }
+
+  &__strapline-text {
+    // line-height: (@item-padding-top + @item-padding-bottom + @icon-size);
+    padding: @item-padding (@icon-size + (@item-padding * 2)) @item-padding @item-padding;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .dir-rtl & {
+      padding-right: @item-padding;
+      padding-left: @icon-size + (@item-padding * 2);
+    }
+  }
+
+  &__strapline-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    .dir-rtl & {
+      right: inherit;
+      left: 0;
+    }
+
+    .icon {
+      .icon-plus;
+    }
+  }
+  // --------------------------------------------------
+
+  // --------------------------------------------------
+  // Graphic
+  // --------------------------------------------------
+  &__slide-container {
+    position: relative;
+    width: 60%;
+    overflow-x: hidden;
+
+    @media (max-width: @device-width-medium) {
+      .u-float-left;
+      width: 100%;
+    }
+  }
+
+  &__slider-graphic {
+    .u-float-left;
+  }
+
+  // --------------------------------------------------
+  // Controls and progress
+  // --------------------------------------------------
+  &__controls-container {
+    position: relative;
+  }
+
+  &__progress {
+    display: inline-block;
+    height: @icon-size / 2;
+    width: @icon-size / 2;
+    cursor: pointer;
+    background-color: @background-color;
+  }
+
+  &__controls {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    .transform(translateY(-50%));
+  }
+
+  &__control-left {
+    left: 0;
+
+    .dir-rtl & {
+      left: inherit;
+      right: 0;
+    }
+
+    .icon {
+      .icon-controls-left;
+    }
+  }
+
+  &__control-right {
+    right: 0;
+
+    .dir-rtl & {
+      right: inherit;
+      left: 0;
+    }
+
+    .icon {
+      .icon-controls-right;
+    }
+  }
+
+  // --------------------------------------------------
+  // When the disable animation class is not present add a transition
+  // to the narrative graphic on desktop and strapline on mobile
+  // --------------------------------------------------
+  html:not(.disable-animation) & {
+    &__slider,
+    &__strapline-header-inner {
+      .transition(transform 400ms ease-in-out);
+    }
+  }
+  // --------------------------------------------------
+
+  // --------------------------------------------------
+  // Controls located in text content area
+  // Could we refactor this better?
+  // --------------------------------------------------
+  &__content {
+    .m-narrative__controls,
+    .m-narrative__indicators {
+      display: none;
+    }
+  }
+
+  &__text-controls {
+    .m-narrative__content {
+      .m-narrative__controls,
+      .m-narrative__indicators {
+        display: block;
+      }
+    }
+
+    .m-narrative__slide-container {
+      .m-narrative__controls,
+      .m-narrative__indicators {
+        display: none;
+      }
+    }
+  }
+  // --------------------------------------------------
+}
+
+.accessibility {
+  .m-narrative {
+    &__control-left:focus,
+    &__control-left.focus {
+      left: extract(@focus-outline, 1);
+
+      .dir-rtl& {
+        left: inherit;
+        right: extract(@focus-outline, 1);
+      }
+    }
+
+    &__control-right:focus,
+    &__control-right.focus {
+      right: extract(@focus-outline, 1);
+
+      .dir-rtl& {
+        right: inherit;
+        left: extract(@focus-outline, 1);
+      }
+    }
+
+    &__strapline-title:focus .focus-rect {
+      outline: @focus-outline;
+    }
+  }
+}
+
+
+//     .narrative-control-left:focus, .narrative-control-left.focus {
+//         left: extract(@focus-outline, 1);
+//         .dir-rtl & {
+//             left: inherit;
+//             right: extract(@focus-outline, 1);
+//         }
+//     }
+
+//     .narrative-control-right:focus, .narrative-control-right.focus {
+//         right: extract(@focus-outline, 1);
+//         .dir-rtl & {
+//             right: inherit;
+//             left: extract(@focus-outline, 1);
+//         }
+//     }
+
+//     .narrative-strapline-title:focus .focus-rect {
+//         outline: @focus-outline;
+//     }
+// }
+
+
+
+
 // html.size-large .narrative-component {
 //     .narrative-slide-container {
 //         width: 60%;

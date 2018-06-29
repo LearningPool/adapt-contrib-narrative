@@ -9,9 +9,9 @@ define([
     _isInitial: true,
 
     events: {
-      'click .narrative-strapline-title': 'openPopup',
-      'click .narrative-controls': 'onNavigationClicked',
-      'click .narrative-indicators .narrative-progress': 'onProgressClicked'
+      'click .js-narrative-strapline-title': 'openPopup',
+      'click .js-narrative-controls': 'onNavigationClicked',
+      'click .js-narrative-indicators .js-narrative-progress': 'onProgressClicked'
     },
 
     preRender: function() {
@@ -40,7 +40,7 @@ define([
 
     onItemsVisitedChange: function(item, isVisited) {
       if (!isVisited) return;
-      this.$('[data-index="' + item.get('_index') + '"]').addClass('visited');
+      this.$('[data-index="' + item.get('_index') + '"]').addClass('is-visited');
     },
 
     setDeviceSize: function() {
@@ -49,7 +49,7 @@ define([
 
     postRender: function() {
       this.renderState();
-      this.$('.narrative-slider').imageready(this.setReadyStatus.bind(this));
+      this.$('.m-narrative__slider').imageready(this.setReadyStatus.bind(this));
       this.setupNarrative();
 
       if (Adapt.config.get('_disableAnimation')) {
@@ -120,9 +120,9 @@ define([
 
     replaceInstructions: function() {
       if (Adapt.device.screenSize === 'large') {
-        this.$('.narrative-instruction-inner').html(this.model.get('instruction')).a11y_text();
+        this.$('.m-narrative__instruction-inner').html(this.model.get('instruction')).a11y_text();
       } else if (this.model.get('mobileInstruction') && !this.model.get('_wasHotgraphic')) {
-        this.$('.narrative-instruction-inner').html(this.model.get('mobileInstruction')).a11y_text();
+        this.$('.m-narrative__instruction-inner').html(this.model.get('mobileInstruction')).a11y_text();
       }
     },
 
@@ -132,7 +132,7 @@ define([
 
       var model = this.prepareHotgraphicModel();
       var newHotgraphic = new HotgraphicView({ model: model });
-      var $container = $(".component-container", $("." + this.model.get("_parentId")));
+      var $container = $(".component__container", $("." + this.model.get("_parentId")));
 
       $container.append(newHotgraphic.$el);
       this.remove();
@@ -161,8 +161,8 @@ define([
         offset *= -1;
       }
       var cssValue = 'translateX('+offset+'%)';
-      var $sliderElm = this.$('.narrative-slider');
-      var $straplineHeaderElm = this.$('.narrative-strapline-header-inner');
+      var $sliderElm = this.$('.m-narrative__slider');
+      var $straplineHeaderElm = this.$('.m-narrative__strapline-header-inner');
 
       $sliderElm.css('transform', cssValue);
       $straplineHeaderElm.css('transform', cssValue);
@@ -179,9 +179,9 @@ define([
 
       var index = this.model.getActiveItem().get('_index');
       if (this.model.get('_isDesktop')) {
-        this.$('.narrative-content-item[data-index="'+index+'"]').a11y_focus();
+        this.$('.m-narrative__content-item[data-index="'+index+'"]').a11y_focus();
       } else {
-        this.$('.narrative-strapline-title').a11y_focus();
+        this.$('.m-narrative__strapline-title').a11y_focus();
       }
     },
 
@@ -192,12 +192,12 @@ define([
         item.toggleVisited(true);
       }
 
-      var $slideGraphics = this.$('.narrative-slider-graphic');
-      this.$('.narrative-progress:visible').removeClass('selected').filter('[data-index="'+index+'"]').addClass('selected');
+      var $slideGraphics = this.$('.m-narrative__slider-graphic');
+      this.$('.m-narrative__progress:visible').removeClass('is-selected').filter('[data-index="'+index+'"]').addClass('is-selected');
       $slideGraphics.children('.controls').a11y_cntrl_enabled(false);
       $slideGraphics.filter('[data-index="'+index+'"]').children('.controls').a11y_cntrl_enabled(true);
-      this.$('.narrative-content-item').addClass('narrative-hidden').a11y_on(false).filter('[data-index="'+index+'"]').removeClass('narrative-hidden').a11y_on(true);
-      this.$('.narrative-strapline-title').a11y_cntrl_enabled(false).filter('[data-index="'+index+'"]').a11y_cntrl_enabled(true);
+      this.$('.m-narrative__content-item').addClass('u-visibility-hidden u-display-none').a11y_on(false).filter('[data-index="'+index+'"]').removeClass('u-visibility-hidden u-display-none').a11y_on(true);
+      this.$('.m-narrative__strapline-title').a11y_cntrl_enabled(false).filter('[data-index="'+index+'"]').a11y_cntrl_enabled(true);
 
       this.evaluateNavigation();
       this.evaluateCompletion();
@@ -214,8 +214,8 @@ define([
       var isAtStart = currentStage === 0;
       var isAtEnd = currentStage === itemCount - 1;
 
-      this.$('.narrative-control-left').toggleClass('narrative-hidden', isAtStart);
-      this.$('.narrative-control-right').toggleClass('narrative-hidden', isAtEnd);
+      this.$('.m-narrative__control-left').toggleClass('u-visibility-hidden', isAtStart);
+      this.$('.m-narrative__control-right').toggleClass('u-visibility-hidden', isAtEnd);
     },
 
     evaluateCompletion: function() {
@@ -242,9 +242,9 @@ define([
       var stage = this.model.getActiveItem().get('_index');
       var numberOfItems = this.model.get('_children').length;
 
-      if ($(event.currentTarget).hasClass('narrative-control-right')) {
+      if ($(event.currentTarget).hasClass('m-narrative__control-right')) {
         this.model.setActiveItem(++stage);
-      } else if ($(event.currentTarget).hasClass('narrative-control-left')) {
+      } else if ($(event.currentTarget).hasClass('m-narrative__control-left')) {
         this.model.setActiveItem(--stage);
       }
     },
@@ -270,19 +270,19 @@ define([
       var wasAllInview = (this._isVisibleTop && this._isVisibleBottom);
       if (!wasAllInview) return;
 
-      this.$('.component-inner').off('inview');
+      this.$('.component__inner').off('inview');
       this.setCompletionStatus();
     },
 
     setupEventListeners: function() {
       if (this.model.get('_setCompletionOn') === 'inview') {
-        this.$('.component-widget').on('inview', this.inview.bind(this));
+        this.$('.component__widget').on('inview', this.inview.bind(this));
       }
     },
 
     remove: function() {
       if (this.model.get('_setCompletionOn') === 'inview') {
-        this.$('.component-widget').off('inview');
+        this.$('.component__widget').off('inview');
       }
       ComponentView.prototype.remove.apply(this, arguments);
     }
