@@ -1,17 +1,17 @@
 .m-narrative {
   &__content {
-    .u-float-right;
-    margin-left: 3%;
-    width: 37%;
+    display: none;
 
-    .dir-rtl & {
-      margin-left: inherit;
-      margin-right: 3%;
-    }
+    @media (min-width: @device-width-medium) {
+      display: block;
+      .u-float-right;
+      margin-left: 3%;
+      width: 37%;
 
-    // Hide the content area in mobile view
-    @media (max-width: @device-width-medium) {
-      display: none;
+      .dir-rtl & {
+        margin-left: inherit;
+        margin-right: 3%;
+      }
     }
   }
 
@@ -46,16 +46,20 @@
   }
 
   &__strapline-text {
-    // line-height: (@item-padding-top + @item-padding-bottom + @icon-size);
-    padding: @item-padding (@icon-size + (@item-padding * 2)) @item-padding @item-padding;
+    margin-right: @icon-size + (@item-padding * 2);
+    padding: @item-padding;
+    line-height: @icon-size;
+
+    .dir-rtl & {
+      margin-right: inherit;
+      margin-left: @icon-size + (@item-padding * 2);
+    }
+  }
+
+  &__strapline-text-inner {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
-    .dir-rtl & {
-      padding-right: @item-padding;
-      padding-left: @icon-size + (@item-padding * 2);
-    }
   }
 
   &__strapline-icon {
@@ -79,12 +83,13 @@
   // --------------------------------------------------
   &__slide-container {
     position: relative;
-    width: 60%;
+    .u-float-left;
+    width: 100%;
     overflow-x: hidden;
 
-    @media (max-width: @device-width-medium) {
-      .u-float-left;
-      width: 100%;
+    @media (min-width: @device-width-medium) {
+      float: none;
+      width: 60%;
     }
   }
 
@@ -97,14 +102,6 @@
   // --------------------------------------------------
   &__controls-container {
     position: relative;
-  }
-
-  &__progress {
-    display: inline-block;
-    height: @icon-size / 2;
-    width: @icon-size / 2;
-    cursor: pointer;
-    background-color: @background-color;
   }
 
   &__controls {
@@ -140,6 +137,20 @@
     }
   }
 
+  &__indicators {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  &__progress {
+    height: @icon-size / 2;
+    width: @icon-size / 2;
+    margin: 0.25em;
+    cursor: pointer;
+    background-color: @background-color;
+  }
+
   // --------------------------------------------------
   // When the disable animation class is not present add a transition effect
   // to the narrative graphic on desktop and strapline on mobile
@@ -165,9 +176,28 @@
 
   &__text-controls {
     .m-narrative__content {
-      .m-narrative__controls,
+      position: relative;
+      padding-top: @icon-size + (@icon-padding * 2);
+
       .m-narrative__indicators {
+        display: flex;
+      }
+
+      .m-narrative__controls-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+      }
+
+      .m-narrative__controls {
+        position: relative;
+        top: 0;
         display: block;
+        transform: none;
       }
     }
 

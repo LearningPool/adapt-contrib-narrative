@@ -33,15 +33,15 @@
 
         <div class="m-narrative__controls-container u-clearfix">
 
+          <button class="btn-icon m-narrative__controls m-narrative__control-left js-narrative-controls" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
+            <div class="icon"></div>
+          </button>
+
           <div class="m-narrative__indicators js-narrative-indicators">
             {{#each _items}}
             <div class="m-narrative__progress component-item-color component-item-border js-narrative-progress{{#if _isVisited}} is-visited{{/if}}" data-index="{{@index}}"></div>
             {{/each}}
           </div>
-
-          <button class="btn-icon m-narrative__controls m-narrative__control-left js-narrative-controls" aria-label="{{_globals._accessibility._ariaLabels.previous}}">
-            <div class="icon"></div>
-          </button>
 
           <button class="btn-icon m-narrative__controls m-narrative__control-right js-narrative-controls" aria-label="{{_globals._accessibility._ariaLabels.next}}">
             <div class="icon"></div>
@@ -60,8 +60,8 @@
           {{#each _items}}
           <button class="btn-text m-narrative__strapline-title js-narrative-strapline-title{{#if _isVisited}} is-visited{{/if}}" aria-label="{{{strapline}}}" style="width: {{../_itemWidth}}%" data-index="{{@index}}">
 
-            <div class="m-narrative-strapline__text">
-              <div class="m-narrative-strapline__text-inner">
+            <div class="m-narrative__strapline-text">
+              <div class="m-narrative__strapline-text-inner">
                 {{{strapline}}}
               </div>
             </div>
