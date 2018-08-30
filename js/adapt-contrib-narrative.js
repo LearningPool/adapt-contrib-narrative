@@ -12,13 +12,15 @@ define(function(require) {
         },
 
         preRender: function() {
-            this.listenTo(Adapt, 'device:changed', this.reRender, this);
-            this.listenTo(Adapt, 'device:resize', this.resizeControl, this);
-            this.listenTo(Adapt, 'notify:closed', this.closeNotify, this);
-            this.setDeviceSize();
+          this.listenTo(Adapt, {
+              'device:changed': this.reRender,
+              'device:resize': this.resizeControl,
+              'notify:closed': this.closeNotify
+          });
+          this.setDeviceSize();
 
-            // Checks to see if the narrative should be reset on revisit
-            this.checkIfResetOnRevisit();
+          // Checks to see if the narrative should be reset on revisit
+          this.checkIfResetOnRevisit();
         },
 
         setDeviceSize: function() {
@@ -33,9 +35,7 @@ define(function(require) {
 
         postRender: function() {
             this.renderState();
-            this.$('.narrative-slider').imageready(_.bind(function() {
-                this.setReadyStatus();
-            }, this));
+            this.$('.narrative-slider').imageready(this.setReadyStatus.bind(this));
             this.setupNarrative();
         },
 
@@ -56,17 +56,20 @@ define(function(require) {
 
         setupNarrative: function() {
             this.setDeviceSize();
-            if(!this.model.has('_items') || !this.model.get('_items').length) return;
+            var items = this.model.get('_items');
+            if (!items || !items.length) return;
+
             this.model.set('_marginDir', 'left');
             if (Adapt.config.get('_defaultDirection') == 'rtl') {
                 this.model.set('_marginDir', 'right');
             }
-            this.model.set('_itemCount', this.model.get('_items').length);
+            this.model.set('_itemCount', items.length);
 
             this.model.set('_active', true);
 
-            if (this.model.get('_stage')) {
-                this.setStage(this.model.get('_stage'), true);
+            var stage = this.model.get('_stage');
+            if (stage) {
+                this.setStage(stage, true);
             } else {
                 this.setStage(0, true);
             }
@@ -81,16 +84,26 @@ define(function(require) {
         calculateWidths: function() {
             var slideWidth = this.$('.narrative-slide-container').width();
             var slideCount = this.model.get('_itemCount');
+            var slideMinWidth = (100 / slideCount) + '%';
             var marginRight = this.$('.narrative-slider-graphic').css('margin-right');
             var extraMargin = marginRight === '' ? 0 : parseInt(marginRight);
             var fullSlideWidth = (slideWidth + extraMargin) * slideCount;
+            var fullSlideMinWidth = (100 * slideCount) + '%';
 
-            this.$('.narrative-slider-graphic').width(slideWidth);
-            this.$('.narrative-strapline-header').width(slideWidth);
-            this.$('.narrative-strapline-title').width(slideWidth);
+            var slideCSS = {
+              'min-width': slideMinWidth,
+              'width': slideWidth
+            }
+            this.$('.narrative-slider-graphic').css(slideCSS);
+            this.$('.narrative-strapline-header').css(slideCSS);
+            this.$('.narrative-strapline-title').css(slideCSS);
 
-            this.$('.narrative-slider').width(fullSlideWidth);
-            this.$('.narrative-strapline-header-inner').width(fullSlideWidth);
+            var fullSlideCSS = {
+              'min-width': fullSlideMinWidth,
+              'width': fullSlideWidth
+            }
+            this.$('.narrative-slider').css(fullSlideCSS);
+            this.$('.narrative-strapline-header-inner').css(fullSlideCSS);
 
             var stage = this.model.get('_stage');
             var margin = -(stage * slideWidth);
@@ -147,9 +160,12 @@ define(function(require) {
 
         prepareHotgraphicModel: function() {
             var model = this.model;
-            model.set('_component', 'hotgraphic');
-            model.set('body', model.get('originalBody'));
-            model.set('instruction', model.get('originalInstruction'));
+            model.set({
+              '_component': 'hotgraphic',
+              'body': model.get('originalBody'),
+              'instruction': model.get('originalInstruction')
+            });
+
             return model;
         },
 
